@@ -15,9 +15,9 @@ class FCLayer(object):
         self.act = act
 
         self.w = create_variable('%s-w' % layer_name, [n_in, n_out],
-                                  tf.random_normal_initializer(mean=0.0, stddev=2.0/numpy.sqrt(n_in), dtype=float_type))
+                                  tf.contrib.layers.xavier_initializer()) 
         self.b = create_variable('%s-b' % layer_name, [n_out],
-                                      tf.constant_initializer(0.1, dtype=float_type))
+                                      tf.constant_initializer(0.0, dtype=float_type))
 
     def forward(self, x, is_train=True):
         out=tf.matmul(x, self.w)
