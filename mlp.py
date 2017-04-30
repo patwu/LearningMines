@@ -6,7 +6,7 @@ from utils import FCLayer
 
 class MLP(object):
 
-    def __init__(self,n_input=2, n_hidden=32, n_output=2):
+    def __init__(self,n_input=2, n_hidden=16, n_output=2):
         self.n_input=n_input
         self.n_hidden=n_hidden
         self.n_output=n_output
@@ -28,9 +28,9 @@ class MLP(object):
         h=FCLayer('layer3',n_in=self.n_hidden,n_out=self.n_hidden).forward(h)
         if dropout:
             h=tf.nn.dropout(h,0.5)
-        h=FCLayer('layer4',n_in=self.n_hidden,n_out=self.n_hidden).forward(h)
-        if dropout:
-            h=tf.nn.dropout(h,0.5)
+#        h=FCLayer('layer4',n_in=self.n_hidden,n_out=self.n_hidden).forward(h)
+#        if dropout:
+#            h=tf.nn.dropout(h,0.5)
         logit=FCLayer('layer5',n_in=self.n_hidden,n_out=self.n_output).forward(h)
         pred=tf.nn.softmax(logit)
 
@@ -47,6 +47,7 @@ class MLP(object):
         self.loss_step=loss=self.loss(logit,y)
 
         _,pred=self.forward(x,dropout=False)
+        self.prob_step=pred
         self.pred_step=tf.argmax(pred,axis=1)
 
         opt = tf.train.GradientDescentOptimizer(learning_rate=0.01)
@@ -65,9 +66,9 @@ class MLP(object):
         return pred,loss
 
     def predict(self,x):
-        x=np.reshape(np.asarray(x,dtype=np.float32),shape=(1,self.n_input))
+        x=np.reshape(np.asarray(x,dtype=np.float32),(1,self.n_input))
 
         feed = {self.x:x}
-        pred,loss=self.sess.run([self.pred_step,self.loss_step], feed_dict=feed)
-        return pred[0],loss
+        pred,prob=self.sess.run([self.pred_step,self.prob_step], feed_dict=feed)
+        return pred[0],prob[0]
        
