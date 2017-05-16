@@ -10,7 +10,7 @@ LearningMines requires the following dependencies:
 
 ```bash
 git clone https://github.com/patwu/LearningMines.git
-pip install numpy,tensorflow,Pillow
+pip install numpy tensorflow Pillow
 ```
 
 
