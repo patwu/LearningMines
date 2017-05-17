@@ -42,6 +42,8 @@ class Board(object):
         self.n_moves=0
 
     def play(self, row, col):
+        if not row in range(self.n_height) or not col in range(self.n_width):
+            self.gamestate='fail'
         if self.gamestate!='ready':
             return self.gamestate,copy.deepcopy(self.show)
 
@@ -72,15 +74,19 @@ class Board(object):
         return self.gamestate,copy.deepcopy(self.show)
 
     def get_array(self):
-        return self.show
+        return copy.deepcopy(self.show)
 
     def get_state(self):
         return self.gamestate
 
     def print_board(self):
-        str='+'+'--'*self.n_width+'-+\n'
+        str='   '
+        for i in range(self.n_width):
+            str+='%2d'%i
+        str+=' \n'
+        str+='  +'+'--'*self.n_width+'-+\n'
         for i in range(self.n_height):
-            str+='| '
+            str+='%2d| '%i
             for j in range(self.n_width):
                 if self.show[i][j]==-1:
                     str+='*'
@@ -93,10 +99,10 @@ class Board(object):
                 else:
                     str+=' '
             str+='|\n'
-        str+='+'+'--'*self.n_width+'-+\n'
-        str+='state:%s\n'%self.gamestate
-        str+='num mines:%d\n'%self.n_mines
-        str+='num moves:%d\n'%self.n_moves
+        str+='  +'+'--'*self.n_width+'-+\n'
+        str+='  state:%s\n'%self.gamestate
+        str+='  num mines:%d\n'%self.n_mines
+        str+='  num moves:%d\n'%self.n_moves
         print str
 
     def draw_board(self,path, policy=None):
