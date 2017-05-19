@@ -31,7 +31,7 @@ class MLP(object):
 #        h=FCLayer('layer4',n_in=self.n_hidden,n_out=self.n_hidden).forward(h)
 #        if dropout:
 #            h=tf.nn.dropout(h,0.5)
-        logit=FCLayer('layer5',n_in=self.n_hidden,n_out=self.n_output).forward(h)
+        logit=FCLayer('layer5',n_in=self.n_hidden,n_out=self.n_output, act=None).forward(h)
         pred=tf.nn.softmax(logit)
 
         tf.get_variable_scope().reuse_variables()
