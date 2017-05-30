@@ -1,7 +1,7 @@
 from board import Board
 from mlp import MLP
 import numpy as np
-np.set_printoptions(linewidth=1000,precision=4)
+np.set_printoptions(linewidth=1000,precision=3)
 
 mv=[[0,0],[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
 
@@ -23,7 +23,7 @@ def buildx(field,row,col,n_size):
     return x
 
 def train():
-    mlp=MLP(n_input=9*10,n_output=2)
+    mlp=MLP(n_input=9*10,n_output=2,n_hidden=64)
     n_size=10
 
     for e in range(100000):
@@ -60,7 +60,7 @@ def train():
                 print 'episode %d, loss: %.3f'%(e,loss)
         
         #try play
-        if e%1000==0:
+        if e%500==0:
             board=Board(n_size,n_size,n_size)
             board.print_board()
             board.draw_board('tmp')

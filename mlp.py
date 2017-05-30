@@ -20,14 +20,14 @@ class MLP(object):
 
     def forward(self,x,dropout=True):
         h=FCLayer('layer1',n_in=self.n_input,n_out=self.n_hidden).forward(x)
-        if dropout:
-            h=tf.nn.dropout(h,0.5)
+#        if dropout:
+#            h=tf.nn.dropout(h,0.5)
         h=FCLayer('layer2',n_in=self.n_hidden,n_out=self.n_hidden).forward(h)
-        if dropout:
-            h=tf.nn.dropout(h,0.5)
-        h=FCLayer('layer3',n_in=self.n_hidden,n_out=self.n_hidden).forward(h)
-        if dropout:
-            h=tf.nn.dropout(h,0.5)
+#        if dropout:
+#            h=tf.nn.dropout(h,0.5)
+#        h=FCLayer('layer3',n_in=self.n_hidden,n_out=self.n_hidden).forward(h)
+#        if dropout:
+#            h=tf.nn.dropout(h,0.5)
 #        h=FCLayer('layer4',n_in=self.n_hidden,n_out=self.n_hidden).forward(h)
 #        if dropout:
 #            h=tf.nn.dropout(h,0.5)
@@ -50,7 +50,7 @@ class MLP(object):
         self.prob_step=pred
         self.pred_step=tf.argmax(pred,axis=1)
 
-        opt = tf.train.GradientDescentOptimizer(learning_rate=0.01)
+        opt = tf.train.GradientDescentOptimizer(learning_rate=0.05)
         self.train_step=opt.minimize(loss, global_step=global_step)
        
         self.sess = tf.Session()
