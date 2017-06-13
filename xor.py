@@ -20,6 +20,7 @@ if __name__=='__main__':
        
         #feed data to nerual network
         pred,loss=mlp.train(x,y)
+        pred,prob=mlp.predict(x)
         if(pred==y):
             correct=correct+1
 

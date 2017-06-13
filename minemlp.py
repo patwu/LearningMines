@@ -3,11 +3,11 @@ from mlp import MLP
 import numpy as np
 np.set_printoptions(linewidth=1000,precision=3)
 
-mv=[[0,0],[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
+mv=[[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
 
 def buildx(field,row,col,n_size):
     x=[]
-    for i in range(9):
+    for i in range(8):
         nrow=row+mv[i][0]
         ncol=col+mv[i][1]
         if nrow in range(0,n_size) and ncol in range(0,n_size):
@@ -23,7 +23,7 @@ def buildx(field,row,col,n_size):
     return x
 
 def train():
-    mlp=MLP(n_input=9*10,n_output=2,n_hidden=64)
+    mlp=MLP(n_input=8*10,n_output=2,n_hidden=64)
     n_size=10
 
     for e in range(100000):
@@ -33,7 +33,10 @@ def train():
             field=board.get_array()
             eps=np.random.random()
             if eps<0.1:
-                row, col = np.random.randint(0, n_size),np.random.randint(0, n_size)
+                while True:
+                    row, col = np.random.randint(0, n_size),np.random.randint(0, n_size)
+                    if field[row][col]==-1:
+                        break
                 x=buildx(field,row,col,n_size)            
             else:
                 best=-1
@@ -41,6 +44,8 @@ def train():
 
                 for row in range(n_size):
                     for col in range(n_size):
+                        if field[row][col]!=-1:
+                            continue
                         x=buildx(field,row,col,n_size)
                         _,prob=mlp.predict(x)
                         if prob[1]>best:
@@ -71,6 +76,8 @@ def train():
                 policy=np.zeros((n_size,n_size))
                 for row in range(n_size):
                     for col in range(n_size):
+                        if field[row][col]!=-1:
+                            continue
                         x=buildx(field,row,col,n_size)
                         _,prob=mlp.predict(x)
                         policy[row][col]=prob[1]
